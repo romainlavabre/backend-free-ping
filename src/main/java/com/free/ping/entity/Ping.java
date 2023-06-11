@@ -6,6 +6,8 @@ import com.free.ping.entity.converter.JsonArrayColumnConverter;
 import com.free.ping.exception.HttpUnprocessableEntityException;
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 public class Ping {
 
@@ -24,13 +26,16 @@ public class Ping {
     private String versionField;
 
     @Convert( converter = JsonArrayColumnConverter.class )
-    private final JsonArrayColumn< String > alertTechnicalEmails;
+    @Column( columnDefinition = "JSON" )
+    private JsonArrayColumn< String > alertTechnicalEmails;
 
     @Convert( converter = JsonArrayColumnConverter.class )
-    private final JsonArrayColumn< String > alertTechnicalPhones;
+    @Column( columnDefinition = "JSON" )
+    private JsonArrayColumn< String > alertTechnicalPhones;
 
     @Convert( converter = JsonArrayColumnConverter.class )
-    private final JsonArrayColumn< String > alertUserEmails;
+    @Column( columnDefinition = "JSON" )
+    private JsonArrayColumn< String > alertUserEmails;
 
 
     public Ping() {
@@ -114,17 +119,12 @@ public class Ping {
     }
 
 
-    public Ping addAlertTechnicalEmail( String email ) {
-        if ( !alertTechnicalEmails.contains( email ) ) {
-            alertTechnicalEmails.add( email );
-        }
+    public Ping setAlertTechnicalEmails( List< Object > alertTechnicalEmails ) {
+        JsonArrayColumn< String > jsonArrayColumn = new JsonArrayColumn<>();
 
-        return this;
-    }
+        alertTechnicalEmails.forEach( object -> jsonArrayColumn.add( object.toString() ) );
 
-
-    public Ping removeAlertTechnicalEmail( String email ) {
-        alertTechnicalEmails.remove( email );
+        this.alertTechnicalEmails = jsonArrayColumn;
 
         return this;
     }
@@ -135,17 +135,12 @@ public class Ping {
     }
 
 
-    public Ping addAlertTechnicalPhone( String phone ) {
-        if ( !alertTechnicalPhones.contains( phone ) ) {
-            alertTechnicalPhones.add( phone );
-        }
+    public Ping setAlertTechnicalPhones( List< Object > alertTechnicalPhones ) {
+        JsonArrayColumn< String > jsonArrayColumn = new JsonArrayColumn<>();
 
-        return this;
-    }
+        alertTechnicalPhones.forEach( object -> jsonArrayColumn.add( object.toString() ) );
 
-
-    public Ping removeAlertTechnicalPhone( String phone ) {
-        alertTechnicalPhones.remove( phone );
+        this.alertTechnicalPhones = jsonArrayColumn;
 
         return this;
     }
@@ -156,17 +151,12 @@ public class Ping {
     }
 
 
-    public Ping addAlertUserEmail( String email ) {
-        if ( !alertUserEmails.contains( email ) ) {
-            alertUserEmails.add( email );
-        }
+    public Ping setAlertUserEmails( List< Object > alertUserEmails ) {
+        JsonArrayColumn< String > jsonArrayColumn = new JsonArrayColumn<>();
 
-        return this;
-    }
+        alertUserEmails.forEach( object -> jsonArrayColumn.add( object.toString() ) );
 
-
-    public Ping removeAlertUserEmail( String email ) {
-        alertUserEmails.remove( email );
+        this.alertUserEmails = jsonArrayColumn;
 
         return this;
     }
