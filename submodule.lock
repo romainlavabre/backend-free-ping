@@ -1,0 +1,38 @@
+{
+  "Container": {
+    "tag": "1.0.0"
+  },
+  "Environment": {
+    "tag": "1.0.0"
+  },
+  "Event": {
+    "tag": "2.0.4"
+  },
+  "Mail": {
+    "tag": "1.0.0"
+  },
+  "Request": {
+    "tag": "2.0.1"
+  },
+  "Crud": {
+    "tag": "1.0.0"
+  },
+  "Rest": {
+    "tag": "1.2.3"
+  },
+  "Sms": {
+    "tag": "1.0.0"
+  },
+  "Json": {
+    "tag": "3.0.3"
+  },
+  "Pagination": {
+    "tag": "3.0.0"
+  },
+  "History": {
+    "tag": "3.1.2"
+  },
+  "Security": {
+    "tag": "3.0.4"
+  }
+}
