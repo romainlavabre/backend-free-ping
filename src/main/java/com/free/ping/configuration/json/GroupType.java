@@ -5,4 +5,5 @@ package com.free.ping.configuration.json;
  */
 public interface GroupType {
     String DEFAULT = "_default";
+    String ADMIN   = "ADMIN";
 }
