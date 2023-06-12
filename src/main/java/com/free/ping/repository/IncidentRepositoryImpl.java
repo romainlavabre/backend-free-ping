@@ -1,14 +1,27 @@
 package com.free.ping.repository;
 
 import com.free.ping.entity.Incident;
+import com.free.ping.entity.Ping;
+import com.free.ping.repository.jpa.IncidentJpa;
 import jakarta.persistence.EntityManager;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class IncidentRepositoryImpl extends AbstractRepository< Incident > implements IncidentRepository {
-    public IncidentRepositoryImpl( EntityManager entityManager, JpaRepository< Incident, Long > jpaRepository ) {
-        super( entityManager, jpaRepository );
+    protected final IncidentJpa incidentJpa;
+
+
+    public IncidentRepositoryImpl( EntityManager entityManager, IncidentJpa incidentJpa ) {
+        super( entityManager, incidentJpa );
+        this.incidentJpa = incidentJpa;
+    }
+
+
+    @Override
+    public List< Incident > findAllByPing( Ping ping ) {
+        return incidentJpa.findAllByPing( ping );
     }
 
 
