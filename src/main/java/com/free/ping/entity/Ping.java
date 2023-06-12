@@ -23,6 +23,9 @@ public class Ping {
 
     private long slowDownSeconds;
 
+    @Column( name = "`interval`", nullable = false )
+    private long interval;
+
     private String versionField;
 
     @Convert( converter = JsonArrayColumnConverter.class )
@@ -97,6 +100,26 @@ public class Ping {
         }
 
         this.slowDownSeconds = slowDownSeconds;
+
+        return this;
+    }
+
+
+    public long getInterval() {
+        return interval;
+    }
+
+
+    public Ping setInterval( Long interval ) {
+        if ( interval == null ) {
+            throw new HttpUnprocessableEntityException( Message.PING_INTERVAL_REQUIRED );
+        }
+
+        if ( interval < 1 ) {
+            throw new HttpUnprocessableEntityException( Message.PING_INTERVAL_INVALID );
+        }
+
+        this.interval = interval;
 
         return this;
     }

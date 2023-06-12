@@ -2,13 +2,14 @@ package com.free.ping.configuration.security;
 
 import com.free.ping.api.security.AuthenticationFilter;
 import jakarta.servlet.DispatcherType;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -70,9 +71,14 @@ public class SecurityConfig {
     }
 
 
-    @Autowired
-    public void configureGlobal( final AuthenticationManagerBuilder authenticationManagerBuilder ) throws Exception {
-        authenticationManagerBuilder.userDetailsService( this.userDetailsService );
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+
+        authProvider.setUserDetailsService( userDetailsService );
+        authProvider.setPasswordEncoder( passwordEncoder() );
+
+        return authProvider;
     }
 
 
@@ -83,9 +89,16 @@ public class SecurityConfig {
 
 
     @Bean
+    public AuthenticationManager authenticationManager( AuthenticationConfiguration authConfiguration ) throws Exception {
+        return authConfiguration.getAuthenticationManager();
+    }
+
+
+    @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 
     private class SecurityRole {
         private final String ROLE;

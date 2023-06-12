@@ -23,6 +23,7 @@ public class PingController {
     protected final Update< Ping >     updatePingTitle;
     protected final Update< Ping >     updatePingPingUrl;
     protected final Update< Ping >     updatePingSlowDownSeconds;
+    protected final Update< Ping >     updatePingInterval;
     protected final Update< Ping >     updatePingVersionField;
     protected final Update< Ping >     updatePingAlertTechnicalEmails;
     protected final Update< Ping >     updatePingAlertTechnicalPhones;
@@ -37,6 +38,7 @@ public class PingController {
             Update< Ping > updatePingTitle,
             Update< Ping > updatePingPingUrl,
             Update< Ping > updatePingSlowDownSeconds,
+            Update< Ping > updatePingInterval,
             Update< Ping > updatePingVersionField,
             Update< Ping > updatePingAlertTechnicalEmails,
             Update< Ping > updatePingAlertTechnicalPhones,
@@ -48,6 +50,7 @@ public class PingController {
         this.updatePingTitle                = updatePingTitle;
         this.updatePingPingUrl              = updatePingPingUrl;
         this.updatePingSlowDownSeconds      = updatePingSlowDownSeconds;
+        this.updatePingInterval             = updatePingInterval;
         this.updatePingVersionField         = updatePingVersionField;
         this.updatePingAlertTechnicalEmails = updatePingAlertTechnicalEmails;
         this.updatePingAlertTechnicalPhones = updatePingAlertTechnicalPhones;
@@ -126,6 +129,19 @@ public class PingController {
         Ping ping = pingRepository.findOrFail( id );
 
         updatePingSlowDownSeconds.update( request, ping );
+
+        dataStorageHandler.save();
+
+        return ResponseEntity.ok( Encoder.encode( ping ) );
+    }
+
+
+    @Transactional
+    @PatchMapping( path = "/{id:[0-9]+}/interval" )
+    public ResponseEntity< Map< String, Object > > updateInterval( @PathVariable( "id" ) long id ) {
+        Ping ping = pingRepository.findOrFail( id );
+
+        updatePingInterval.update( request, ping );
 
         dataStorageHandler.save();
 

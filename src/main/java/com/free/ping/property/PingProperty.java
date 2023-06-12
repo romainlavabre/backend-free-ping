@@ -8,4 +8,5 @@ public interface PingProperty {
     String ALERT_TECHNICAL_EMAILS = "alertTechnicalEmails";
     String ALERT_TECHNICAL_PHONES = "alertTechnicalPhones";
     String ALERT_USER_EMAILS      = "alertUserEmails";
+    String INTERVAL               = "interval";
 }

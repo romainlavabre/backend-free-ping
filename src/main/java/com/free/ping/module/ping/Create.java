@@ -26,6 +26,7 @@ public class Create implements com.free.ping.api.crud.Create< Ping > {
         String         title                = request.getParameter( PingParameter.TITLE, String.class );
         String         pingUrl              = request.getParameter( PingParameter.PING_URL, String.class );
         Long           slowDownSeconds      = request.getParameter( PingParameter.SLOW_DOWN_SECONDS, Long.class );
+        Long           interval             = request.getParameter( PingParameter.INTERVAL, Long.class );
         String         versionField         = request.getParameter( PingParameter.VERSION_FIELD, String.class );
         List< Object > alertTechnicalEmails = request.getParameters( PingParameter.ALERT_TECHNICAL_EMAILS );
         List< Object > alertTechnicalPhones = request.getParameters( PingParameter.ALERT_TECHNICAL_PHONES );
@@ -35,6 +36,7 @@ public class Create implements com.free.ping.api.crud.Create< Ping > {
                 .setTitle( title )
                 .setPingUrl( pingUrl )
                 .setSlowDownSeconds( slowDownSeconds )
+                .setInterval( interval )
                 .setVersionField( versionField )
                 .setAlertTechnicalEmails( alertTechnicalEmails )
                 .setAlertTechnicalPhones( alertTechnicalPhones )

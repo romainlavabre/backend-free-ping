@@ -173,6 +173,12 @@ public class MockRequest implements Request {
 
 
     @Override
+    public void addUploadedFile( String name, UploadedFile uploadedFile ) {
+        this.files.put( name, uploadedFile );
+    }
+
+
+    @Override
     public String getClientIp() {
         return null;
     }

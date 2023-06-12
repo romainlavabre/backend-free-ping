@@ -31,7 +31,7 @@ public class RequestImpl implements Request {
     public RequestImpl() throws JsonProcessingException {
         this.parameters   = new HashMap<>();
         this.queryStrings = new HashMap<>();
-        this.request      = (( ServletRequestAttributes ) RequestContextHolder.getRequestAttributes()).getRequest();
+        this.request      = ( ( ServletRequestAttributes ) RequestContextHolder.getRequestAttributes() ).getRequest();
         this.parseJson();
     }
 
@@ -178,6 +178,12 @@ public class RequestImpl implements Request {
 
     @Override
     public void setUploadedFile( final String name, final UploadedFile uploadedFile ) {
+        this.parameters.put( name, uploadedFile );
+    }
+
+
+    @Override
+    public void addUploadedFile( final String name, final UploadedFile uploadedFile ) {
         if ( this.parameters.get( name ) instanceof List ) {
             final List< UploadedFile > uploadedFiles = ( List< UploadedFile > ) this.parameters.get( name );
 
@@ -278,7 +284,7 @@ public class RequestImpl implements Request {
             try {
                 reader = this.request.getReader();
 
-                while ( (line = reader.readLine()) != null ) {
+                while ( ( line = reader.readLine() ) != null ) {
                     json.append( line );
                 }
             } catch ( final IOException e ) {
@@ -302,7 +308,7 @@ public class RequestImpl implements Request {
 
             if ( input.getKey().equals( "uploaded_file" ) ) {
 
-                for ( final Map.Entry< String, Map< String, Object > > entry : (( Map< String, Map< String, Object > > ) input.getValue()).entrySet() ) {
+                for ( final Map.Entry< String, Map< String, Object > > entry : ( ( Map< String, Map< String, Object > > ) input.getValue() ).entrySet() ) {
 
                     if ( entry.getValue() instanceof Map ) {
                         this.setUploadedFile( entry.getKey(), this.getUploadedFile( entry.getValue() ) );
@@ -371,7 +377,7 @@ public class RequestImpl implements Request {
         final UploadedFile uploadedFile = new UploadedFileImpl();
         uploadedFile.setName( ( String ) map.get( "name" ) );
         uploadedFile.setContent( Base64.getDecoder().decode( ( String ) map.get( "content" ) ) );
-        uploadedFile.setContentType( ( String ) map.get( "content-type" ) );
+        uploadedFile.setContentType( map.get( "content-type" ) == null ? ( String ) map.get( "content_type" ) : ( String ) map.get( "content-type" ) );
         uploadedFile.setSize( uploadedFile.getContent().length );
         uploadedFile.setInfos( ( Map< String, Object > ) map.get( "infos" ) );
 

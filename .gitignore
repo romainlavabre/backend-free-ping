@@ -34,3 +34,6 @@ build/
 
 ### Submodule manager ###
 /.submodule-trash
+
+### docker ###
+docker/dev/.env

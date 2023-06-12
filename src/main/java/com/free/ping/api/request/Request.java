@@ -101,13 +101,20 @@ public interface Request {
 
 
     /**
-     * Add or overwrite uploaded file
+     * Overwrite uploaded file
      *
      * @param name         Parameter name
      * @param uploadedFile Uploaded file
      */
     void setUploadedFile( String name, UploadedFile uploadedFile );
 
+    /**
+     * Add or overwrite uploaded file
+     *
+     * @param name         Parameter name
+     * @param uploadedFile Uploaded file
+     */
+    void addUploadedFile( String name, UploadedFile uploadedFile );
 
     /**
      * @return Client IP

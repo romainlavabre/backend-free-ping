@@ -1,10 +1,6 @@
 package com.free.ping.controller.admin;
 
-import com.free.ping.api.crud.Create;
-import com.free.ping.api.crud.Update;
 import com.free.ping.api.json.Encoder;
-import com.free.ping.api.request.Request;
-import com.free.ping.api.storage.data.DataStorageHandler;
 import com.free.ping.configuration.json.GroupType;
 import com.free.ping.entity.Incident;
 import com.free.ping.entity.Ping;
@@ -23,27 +19,15 @@ import java.util.Map;
 @RestController( "AdminIncidentController" )
 public class IncidentController {
 
-    protected final Create< Incident > createIncident;
-    protected final Update< Incident > updateIncidentAt;
     protected final IncidentRepository incidentRepository;
     protected final PingRepository     pingRepository;
-    protected final DataStorageHandler dataStorageHandler;
-    protected final Request            request;
 
 
     public IncidentController(
-            Create< Incident > createIncident,
-            Update< Incident > updateIncidentAt,
             IncidentRepository incidentRepository,
-            PingRepository pingRepository,
-            DataStorageHandler dataStorageHandler,
-            Request request ) {
-        this.createIncident     = createIncident;
-        this.updateIncidentAt   = updateIncidentAt;
+            PingRepository pingRepository ) {
         this.incidentRepository = incidentRepository;
         this.pingRepository     = pingRepository;
-        this.dataStorageHandler = dataStorageHandler;
-        this.request            = request;
     }
 
 

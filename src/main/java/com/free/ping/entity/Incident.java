@@ -17,11 +17,13 @@ public class Incident {
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     private long id;
 
-    @Column( nullable = false )
+    @Column( name = "`of`", nullable = false )
     private ZonedDateTime of;
 
+    @Column( name = "`at`" )
     private ZonedDateTime at;
 
+    @Column( name = "`type`", nullable = false )
     private byte type;
 
     @ManyToOne
@@ -39,16 +41,12 @@ public class Incident {
     }
 
 
-    public Incident setOf( String of ) {
+    public Incident setOf( ZonedDateTime of ) {
         if ( of == null ) {
             throw new HttpUnprocessableEntityException( Message.INCIDENT_OF_REQUIRED );
         }
 
-        try {
-            this.of = ZonedDateTime.parse( of );
-        } catch ( DateTimeParseException e ) {
-            throw new HttpUnprocessableEntityException( Message.INCIDENT_OF_INVALID_FORMAT );
-        }
+        this.of = of;
 
         return this;
     }
