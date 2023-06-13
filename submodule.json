@@ -37,7 +37,7 @@
     {
         "name": "Mail",
         "repository": "git@github.com:romainlavabre/spring-starter-mail.git",
-        "tag": "1.[0-9]*.[0-9]*",
+        "tag": "3.[0-9]*.[0-9]*",
         "scriptExecution": "auto",
         "target": "/src/main/java/com/free/ping/api/mail"
     },
@@ -82,5 +82,12 @@
         "tag": "1.[0-9]*.[0-9]*",
         "scriptExecution": "auto",
         "target": "/src/main/java/com/free/ping/api/sms"
+    },
+    {
+        "name": "Template",
+        "repository": "git@github.com:romainlavabre/spring-starter-template.git",
+        "tag": "1.[0-9]*.[0-9]*",
+        "scriptExecution": "auto",
+        "target": "/src/main/java/com/free/ping/api/template"
     }
 ]

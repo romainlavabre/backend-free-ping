@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * @author Romain Lavabre <romainlavabre98@gmail.com>
  */
-@Service
+@Service( "mailSenderMailgun" )
 public class Mailgun implements MailSender {
 
     protected Environment environment;
@@ -23,12 +23,12 @@ public class Mailgun implements MailSender {
 
 
     @Override
-    public boolean send( final List< String > to, final String subject, final String message ) {
-        final MultipartBody multipartBody = this.init();
+    public boolean send( String from, final List< String > to, final String subject, final String message ) {
+        final MultipartBody multipartBody = this.init( from );
 
         this.addRecipient( multipartBody, to )
-            .addSubject( multipartBody, subject )
-            .addMessage( multipartBody, message );
+                .addSubject( multipartBody, subject )
+                .addMessage( multipartBody, message );
 
         final HttpResponse< JsonNode > response = multipartBody.asJson();
 
@@ -38,13 +38,13 @@ public class Mailgun implements MailSender {
 
 
     @Override
-    public boolean send( final List< String > to, final String subject, final String message, final List< File > files ) {
-        final MultipartBody multipartBody = this.init();
+    public boolean send( String from, final List< String > to, final String subject, final String message, final List< File > files ) {
+        final MultipartBody multipartBody = this.init( from );
 
         this.addRecipient( multipartBody, to )
-            .addSubject( multipartBody, subject )
-            .addFile( multipartBody, files )
-            .addMessage( multipartBody, message );
+                .addSubject( multipartBody, subject )
+                .addFile( multipartBody, files )
+                .addMessage( multipartBody, message );
 
         final HttpResponse< JsonNode > response = multipartBody.asJson();
 
@@ -53,12 +53,12 @@ public class Mailgun implements MailSender {
 
 
     @Override
-    public boolean send( final String to, final String subject, final String message ) {
-        final MultipartBody multipartBody = this.init();
+    public boolean send( String from, final String to, final String subject, final String message ) {
+        final MultipartBody multipartBody = this.init( from );
 
         this.addRecipient( multipartBody, to )
-            .addSubject( multipartBody, subject )
-            .addMessage( multipartBody, message );
+                .addSubject( multipartBody, subject )
+                .addMessage( multipartBody, message );
 
         final HttpResponse< JsonNode > response = multipartBody.asJson();
 
@@ -67,13 +67,13 @@ public class Mailgun implements MailSender {
 
 
     @Override
-    public boolean send( final String to, final String subject, final String message, final List< File > files ) {
-        final MultipartBody multipartBody = this.init();
+    public boolean send( String from, final String to, final String subject, final String message, final List< File > files ) {
+        final MultipartBody multipartBody = this.init( from );
 
         this.addRecipient( multipartBody, to )
-            .addSubject( multipartBody, subject )
-            .addFile( multipartBody, files )
-            .addMessage( multipartBody, message );
+                .addSubject( multipartBody, subject )
+                .addFile( multipartBody, files )
+                .addMessage( multipartBody, message );
 
         final HttpResponse< JsonNode > response = multipartBody.asJson();
 
@@ -86,14 +86,14 @@ public class Mailgun implements MailSender {
      *
      * @return
      */
-    protected MultipartBody init() {
+    protected MultipartBody init( String from ) {
 
         final HttpRequestWithBody requestWithBody =
-                Unirest.post( "https://api.mailgun.net/v3/" + this.environment.getEnv( Variable.MAIL_DOMAIN ) + "/messages" );
+                Unirest.post( "https://api.mailgun.net/v3/" + this.environment.getEnv( Variable.MAILGUN_DOMAIN ) + "/messages" );
 
         return requestWithBody
-                .basicAuth( "api", this.environment.getEnv( Variable.MAIL_PRIVATE_KEY ) )
-                .field( "from", this.environment.getEnv( Variable.MAIL_FROM ) )
+                .basicAuth( "api", this.environment.getEnv( Variable.MAILGUN_PRIVATE_KEY ) )
+                .field( "from", from )
                 .field( "o:require-tls", "true" )
                 .field( "o:skip-verification", "false" )
                 .field( "encoding", "utf-8" );

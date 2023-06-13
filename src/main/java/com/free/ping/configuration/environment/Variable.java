@@ -11,9 +11,11 @@ public interface Variable {
     String SMS_TWILIO_SID                 = "sms.twilio.sid";
     String SMS_PRIVATE_KEY                = "sms.twilio.auth-token";
     String SMS_FROM                       = "sms.from";
-    String MAIL_DOMAIN                    = "";
-    String MAIL_PRIVATE_KEY               = "";
-    String MAIL_FROM                      = "";
+    String MAILGUN_DOMAIN                 = "";
+    String MAILGUN_PRIVATE_KEY            = "";
+    String MAILGUN_FROM                   = "";
+    String GMAIL_USERNAME                 = "gmail.username";
+    String GMAIL_PASSWORD                 = "gmail.password";
     String DEFAULT_ADMIN_USERNAME         = "default.admin.username";
     String DEFAULT_ADMIN_PASSWORD         = "default.admin.password";
 }
