@@ -115,8 +115,8 @@ public class Ping {
             throw new HttpUnprocessableEntityException( Message.PING_INTERVAL_REQUIRED );
         }
 
-        if ( interval < 1 ) {
-            throw new HttpUnprocessableEntityException( Message.PING_INTERVAL_INVALID );
+        if ( interval < 10 ) {
+            throw new HttpUnprocessableEntityException( Message.PING_INTERVAL_TOO_SHORT );
         }
 
         this.interval = interval;
@@ -145,7 +145,9 @@ public class Ping {
     public Ping setAlertTechnicalEmails( List< Object > alertTechnicalEmails ) {
         JsonArrayColumn< String > jsonArrayColumn = new JsonArrayColumn<>();
 
-        alertTechnicalEmails.forEach( object -> jsonArrayColumn.add( object.toString() ) );
+        if ( alertTechnicalEmails != null ) {
+            alertTechnicalEmails.forEach( object -> jsonArrayColumn.add( object.toString() ) );
+        }
 
         this.alertTechnicalEmails = jsonArrayColumn;
 
@@ -161,7 +163,9 @@ public class Ping {
     public Ping setAlertTechnicalPhones( List< Object > alertTechnicalPhones ) {
         JsonArrayColumn< String > jsonArrayColumn = new JsonArrayColumn<>();
 
-        alertTechnicalPhones.forEach( object -> jsonArrayColumn.add( object.toString() ) );
+        if ( alertTechnicalPhones != null ) {
+            alertTechnicalPhones.forEach( object -> jsonArrayColumn.add( object.toString() ) );
+        }
 
         this.alertTechnicalPhones = jsonArrayColumn;
 
@@ -177,7 +181,9 @@ public class Ping {
     public Ping setAlertUserEmails( List< Object > alertUserEmails ) {
         JsonArrayColumn< String > jsonArrayColumn = new JsonArrayColumn<>();
 
-        alertUserEmails.forEach( object -> jsonArrayColumn.add( object.toString() ) );
+        if ( alertUserEmails != null ) {
+            alertUserEmails.forEach( object -> jsonArrayColumn.add( object.toString() ) );
+        }
 
         this.alertUserEmails = jsonArrayColumn;
 

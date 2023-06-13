@@ -7,4 +7,7 @@ import java.util.List;
 
 public interface IncidentRepository extends DefaultRepository< Incident > {
     List< Incident > findAllByPing( Ping ping );
+
+
+    List< Incident > findAllOpened();
 }

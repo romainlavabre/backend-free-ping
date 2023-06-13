@@ -7,10 +7,14 @@ import com.free.ping.api.rest.Rest;
 import com.free.ping.configuration.event.Event;
 import com.free.ping.entity.Incident;
 import com.free.ping.entity.Ping;
+import com.free.ping.repository.IncidentRepository;
 import com.free.ping.repository.PingRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -20,25 +24,40 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 @Service
 @Scope( proxyMode = ScopedProxyMode.TARGET_CLASS )
 public class PingCheckpoint implements EventSubscriber {
 
-    private Map< Integer, List< Ping > > CACHE = new HashMap<>();
+    private Map< Integer, List< Ping > > CACHE            = null;
+    private Map< Ping, Incident >        CURRENT_INCIDENT = null;
 
-    protected final PingRepository pingRepository;
+    protected final PingRepository       pingRepository;
+    protected final IncidentRepository   incidentRepository;
+    protected final EntityManagerFactory entityManagerFactory;
 
 
-    public PingCheckpoint( PingRepository pingRepository ) {
-        this.pingRepository = pingRepository;
+    public PingCheckpoint(
+            PingRepository pingRepository,
+            IncidentRepository incidentRepository,
+            EntityManagerFactory entityManagerFactory ) {
+        this.pingRepository       = pingRepository;
+        this.incidentRepository   = incidentRepository;
+        this.entityManagerFactory = entityManagerFactory;
+        initCache();
+        initCurrentIncident();
     }
 
 
     @Async
-    @Scheduled( fixedRate = 1000 )
-    public void controller() {
-        System.out.println( "CONTROLLER" );
+    @Scheduled( fixedRate = 1000, initialDelay = 3000 )
+    public void controller() throws InterruptedException, ExecutionException {
+        if ( CACHE == null || CURRENT_INCIDENT == null ) {
+            return;
+        }
+
         ZonedDateTime now = ZonedDateTime.now( ZoneOffset.UTC );
 
         List< Ping > pings = CACHE.get( now.getSecond() );
@@ -47,23 +66,106 @@ public class PingCheckpoint implements EventSubscriber {
             return;
         }
 
+        Map< Ping, Future< Incident > > futures = new HashMap<>();
+
         for ( Ping ping : pings ) {
-            ping( ping );
+            futures.put( ping, ping( ping ) );
         }
 
+        while ( true ) {
+            boolean hasNoCompleted = false;
+
+            for ( Map.Entry< Ping, Future< Incident > > entry : futures.entrySet() ) {
+                if ( !entry.getValue().isCancelled() ) {
+                    hasNoCompleted = true;
+                    break;
+                }
+            }
+
+            if ( hasNoCompleted ) {
+                break;
+            }
+
+            Thread.sleep( 100 );
+        }
+
+        EntityManager entityManager = null;
+
+        for ( Map.Entry< Ping, Future< Incident > > entry : futures.entrySet() ) {
+            if ( entry.getValue().get() != null ) {
+                Ping     ping            = entry.getKey();
+                Incident incident        = entry.getValue().get();
+                Incident currentIncident = CURRENT_INCIDENT.get( ping );
+
+                for ( Map.Entry< Ping, Incident > entry1 : CURRENT_INCIDENT.entrySet() ) {
+                    if ( entry1.getKey().getId() == ping.getId() ) {
+                        currentIncident = entry1.getValue();
+                    }
+                }
+
+                if ( currentIncident != null && currentIncident.getType() == incident.getType() ) {
+                    continue;
+                }
+
+                if ( entityManager == null ) {
+                    entityManager = entityManagerFactory.createEntityManager();
+                    entityManager.getTransaction().begin();
+                }
+
+                if ( currentIncident != null ) {
+                    currentIncident = entityManager.find( Incident.class, currentIncident.getId() );
+
+                    currentIncident.setAt( ZonedDateTime.now( ZoneOffset.UTC ) );
+
+                    entityManager.persist( currentIncident );
+                }
+
+                entityManager.persist( incident );
+
+                CURRENT_INCIDENT.put( entry.getKey(), incident );
+            } else {
+                Incident currentIncident = null;
+
+                for ( Map.Entry< Ping, Incident > entry1 : CURRENT_INCIDENT.entrySet() ) {
+                    if ( entry1.getKey().getId() == entry.getKey().getId() ) {
+                        currentIncident = entry1.getValue();
+                    }
+                }
+
+                if ( currentIncident != null ) {
+                    if ( entityManager == null ) {
+                        entityManager = entityManagerFactory.createEntityManager();
+                        entityManager.getTransaction().begin();
+                    }
+
+                    Incident incident = entityManager.find( Incident.class, currentIncident.getId() );
+
+                    incident.setAt( ZonedDateTime.now( ZoneOffset.UTC ) );
+
+                    entityManager.persist( incident );
+
+                    CURRENT_INCIDENT.remove( entry.getKey() );
+                }
+            }
+        }
+
+        if ( entityManager != null ) {
+            entityManager.flush();
+            entityManager.getTransaction().commit();
+            entityManager.close();
+        }
     }
 
 
     @Async
-    public void ping( Ping ping ) {
-        System.out.println( "PING" );
-        long start = System.nanoTime();
+    public Future< Incident > ping( Ping ping ) {
+        long start = System.currentTimeMillis();
         Response response =
                 Rest.builder()
                         .init( RequestBuilder.GET, ping.getPingUrl() )
                         .buildAndSend();
 
-        long elapsedTime = System.nanoTime() - start;
+        long elapsedTime = System.currentTimeMillis() - start;
 
         if ( !response.isSuccess() ) {
             Incident incident = new Incident();
@@ -71,17 +173,22 @@ public class PingCheckpoint implements EventSubscriber {
             incident.setOf( ZonedDateTime.now( ZoneOffset.UTC ) )
                     .setType( Incident.TYPE_DOWN_TIME )
                     .setPing( ping );
+
+            return new AsyncResult<>( incident );
         }
 
-        if ( elapsedTime / 1000 > ping.getSlowDownSeconds() ) {
+        if ( elapsedTime / 1000 >= ping.getSlowDownSeconds() ) {
             Incident incident = new Incident();
 
             incident.setOf( ZonedDateTime.now( ZoneOffset.UTC ) )
                     .setType( Incident.TYPE_SLOW_DOWN )
                     .setPing( ping );
+
+            return new AsyncResult<>( incident );
         }
 
 
+        return new AsyncResult<>( null );
     }
 
 
@@ -95,6 +202,11 @@ public class PingCheckpoint implements EventSubscriber {
 
     @Override
     public void receiveEvent( Event event, Map< String, Object > params ) throws RuntimeException {
+        initCache();
+    }
+
+
+    protected void initCache() {
         synchronized ( this ) {
             Map< Integer, List< Ping > > result = new HashMap<>();
 
@@ -113,6 +225,19 @@ public class PingCheckpoint implements EventSubscriber {
                     seconds += ping.getInterval();
                 }
             }
+
+            CACHE = result;
+        }
+    }
+
+
+    protected void initCurrentIncident() {
+        List< Incident > incidents = incidentRepository.findAllOpened();
+
+        CURRENT_INCIDENT = new HashMap<>();
+
+        for ( Incident incident : incidents ) {
+            CURRENT_INCIDENT.put( incident.getPing(), incident );
         }
     }
 

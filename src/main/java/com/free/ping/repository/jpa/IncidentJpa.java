@@ -10,4 +10,7 @@ import java.util.List;
 @Repository
 public interface IncidentJpa extends JpaRepository< Incident, Long > {
     List< Incident > findAllByPing( Ping ping );
+
+
+    List< Incident > findAllByAtIsNull();
 }

@@ -5,7 +5,6 @@ import com.free.ping.exception.HttpUnprocessableEntityException;
 import jakarta.persistence.*;
 
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeParseException;
 
 @Entity
 public class Incident {
@@ -57,14 +56,12 @@ public class Incident {
     }
 
 
-    public Incident setAt( String at ) {
-
-        try {
-
-            this.at = ZonedDateTime.parse( at );
-        } catch ( DateTimeParseException e ) {
-            throw new HttpUnprocessableEntityException( Message.INCIDENT_AT_INVALID_FORMAT );
+    public Incident setAt( ZonedDateTime at ) {
+        if ( this.at != null ) {
+            return this;
         }
+
+        this.at = at;
 
         return this;
     }

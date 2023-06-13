@@ -26,6 +26,12 @@ public class IncidentRepositoryImpl extends AbstractRepository< Incident > imple
 
 
     @Override
+    public List< Incident > findAllOpened() {
+        return incidentJpa.findAllByAtIsNull();
+    }
+
+
+    @Override
     protected Class< Incident > getClassType() {
         return Incident.class;
     }
