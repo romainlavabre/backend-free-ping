@@ -24,10 +24,13 @@ public class PingController {
     protected final Update< Ping >     updatePingPingUrl;
     protected final Update< Ping >     updatePingSlowDownSeconds;
     protected final Update< Ping >     updatePingInterval;
-    protected final Update< Ping >     updatePingVersionField;
     protected final Update< Ping >     updatePingAlertTechnicalEmails;
     protected final Update< Ping >     updatePingAlertTechnicalPhones;
     protected final Update< Ping >     updatePingAlertUserEmails;
+    protected final Update< Ping >     updatePingDownTimeDetectedTemplate;
+    protected final Update< Ping >     updatePingDownTimeEndedTemplate;
+    protected final Update< Ping >     updatePingSlowDownDetectedTemplate;
+    protected final Update< Ping >     updatePingSlowDownEndedTemplate;
     protected final PingRepository     pingRepository;
     protected final DataStorageHandler dataStorageHandler;
     protected final Request            request;
@@ -39,25 +42,31 @@ public class PingController {
             Update< Ping > updatePingPingUrl,
             Update< Ping > updatePingSlowDownSeconds,
             Update< Ping > updatePingInterval,
-            Update< Ping > updatePingVersionField,
             Update< Ping > updatePingAlertTechnicalEmails,
             Update< Ping > updatePingAlertTechnicalPhones,
             Update< Ping > updatePingAlertUserEmails,
+            Update< Ping > updatePingDownTimeDetectedTemplate,
+            Update< Ping > updatePingDownTimeEndedTemplate,
+            Update< Ping > updatePingSlowDownDetectedTemplate,
+            Update< Ping > updatePingSlowDownEndedTemplate,
             PingRepository pingRepository,
             DataStorageHandler dataStorageHandler,
             Request request ) {
-        this.createPing                     = createPing;
-        this.updatePingTitle                = updatePingTitle;
-        this.updatePingPingUrl              = updatePingPingUrl;
-        this.updatePingSlowDownSeconds      = updatePingSlowDownSeconds;
-        this.updatePingInterval             = updatePingInterval;
-        this.updatePingVersionField         = updatePingVersionField;
-        this.updatePingAlertTechnicalEmails = updatePingAlertTechnicalEmails;
-        this.updatePingAlertTechnicalPhones = updatePingAlertTechnicalPhones;
-        this.updatePingAlertUserEmails      = updatePingAlertUserEmails;
-        this.pingRepository                 = pingRepository;
-        this.dataStorageHandler             = dataStorageHandler;
-        this.request                        = request;
+        this.createPing                         = createPing;
+        this.updatePingTitle                    = updatePingTitle;
+        this.updatePingPingUrl                  = updatePingPingUrl;
+        this.updatePingSlowDownSeconds          = updatePingSlowDownSeconds;
+        this.updatePingInterval                 = updatePingInterval;
+        this.updatePingAlertTechnicalEmails     = updatePingAlertTechnicalEmails;
+        this.updatePingAlertTechnicalPhones     = updatePingAlertTechnicalPhones;
+        this.updatePingAlertUserEmails          = updatePingAlertUserEmails;
+        this.updatePingDownTimeDetectedTemplate = updatePingDownTimeDetectedTemplate;
+        this.updatePingDownTimeEndedTemplate    = updatePingDownTimeEndedTemplate;
+        this.updatePingSlowDownDetectedTemplate = updatePingSlowDownDetectedTemplate;
+        this.updatePingSlowDownEndedTemplate    = updatePingSlowDownEndedTemplate;
+        this.pingRepository                     = pingRepository;
+        this.dataStorageHandler                 = dataStorageHandler;
+        this.request                            = request;
     }
 
 
@@ -103,19 +112,6 @@ public class PingController {
         Ping ping = pingRepository.findOrFail( id );
 
         updatePingPingUrl.update( request, ping );
-
-        dataStorageHandler.save();
-
-        return ResponseEntity.ok( Encoder.encode( ping ) );
-    }
-
-
-    @Transactional
-    @PatchMapping( path = "/{id:[0-9]+}/version_field" )
-    public ResponseEntity< Map< String, Object > > updateVersionField( @PathVariable( "id" ) long id ) {
-        Ping ping = pingRepository.findOrFail( id );
-
-        updatePingVersionField.update( request, ping );
 
         dataStorageHandler.save();
 
@@ -181,6 +177,58 @@ public class PingController {
         Ping ping = pingRepository.findOrFail( id );
 
         updatePingAlertUserEmails.update( request, ping );
+
+        dataStorageHandler.save();
+
+        return ResponseEntity.ok( Encoder.encode( ping ) );
+    }
+
+
+    @Transactional
+    @PatchMapping( path = "/{id:[0-9]+}/down_time_detected_template" )
+    public ResponseEntity< Map< String, Object > > updateDownTimeDetectedTemplate( @PathVariable( "id" ) long id ) {
+        Ping ping = pingRepository.findOrFail( id );
+
+        updatePingDownTimeDetectedTemplate.update( request, ping );
+
+        dataStorageHandler.save();
+
+        return ResponseEntity.ok( Encoder.encode( ping ) );
+    }
+
+
+    @Transactional
+    @PatchMapping( path = "/{id:[0-9]+}/down_time_ended_template" )
+    public ResponseEntity< Map< String, Object > > updateDownTimeEndedTemplate( @PathVariable( "id" ) long id ) {
+        Ping ping = pingRepository.findOrFail( id );
+
+        updatePingDownTimeEndedTemplate.update( request, ping );
+
+        dataStorageHandler.save();
+
+        return ResponseEntity.ok( Encoder.encode( ping ) );
+    }
+
+
+    @Transactional
+    @PatchMapping( path = "/{id:[0-9]+}/slow_down_detected_template" )
+    public ResponseEntity< Map< String, Object > > updateSlowDownDetectedTemplate( @PathVariable( "id" ) long id ) {
+        Ping ping = pingRepository.findOrFail( id );
+
+        updatePingSlowDownDetectedTemplate.update( request, ping );
+
+        dataStorageHandler.save();
+
+        return ResponseEntity.ok( Encoder.encode( ping ) );
+    }
+
+
+    @Transactional
+    @PatchMapping( path = "/{id:[0-9]+}/slow_down_ended_template" )
+    public ResponseEntity< Map< String, Object > > updateSlowDownEndedTemplate( @PathVariable( "id" ) long id ) {
+        Ping ping = pingRepository.findOrFail( id );
+
+        updatePingSlowDownEndedTemplate.update( request, ping );
 
         dataStorageHandler.save();
 
