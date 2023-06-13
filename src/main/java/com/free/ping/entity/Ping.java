@@ -26,7 +26,17 @@ public class Ping {
     @Column( name = "`interval`", nullable = false )
     private long interval;
 
-    private String versionField;
+    @Column( columnDefinition = "TEXT" )
+    private String downTimeDetectedTemplate;
+
+    @Column( columnDefinition = "TEXT" )
+    private String downTimeEndedTemplate;
+
+    @Column( columnDefinition = "TEXT" )
+    private String slowDownDetectedTemplate;
+
+    @Column( columnDefinition = "TEXT" )
+    private String slowDownEndedTemplate;
 
     @Convert( converter = JsonArrayColumnConverter.class )
     @Column( columnDefinition = "JSON" )
@@ -125,13 +135,49 @@ public class Ping {
     }
 
 
-    public String getVersionField() {
-        return versionField;
+    public String getDownTimeDetectedTemplate() {
+        return downTimeDetectedTemplate;
     }
 
 
-    public Ping setVersionField( String versionField ) {
-        this.versionField = versionField;
+    public Ping setDownTimeDetectedTemplate( String downTimeDetectedTemplate ) {
+        this.downTimeDetectedTemplate = downTimeDetectedTemplate;
+
+        return this;
+    }
+
+
+    public String getDownTimeEndedTemplate() {
+        return downTimeEndedTemplate;
+    }
+
+
+    public Ping setDownTimeEndedTemplate( String downTimeEndedTemplate ) {
+        this.downTimeEndedTemplate = downTimeEndedTemplate;
+
+        return this;
+    }
+
+
+    public String getSlowDownDetectedTemplate() {
+        return slowDownDetectedTemplate;
+    }
+
+
+    public Ping setSlowDownDetectedTemplate( String slowDownDetectedTemplate ) {
+        this.slowDownDetectedTemplate = slowDownDetectedTemplate;
+
+        return this;
+    }
+
+
+    public String getSlowDownEndedTemplate() {
+        return slowDownEndedTemplate;
+    }
+
+
+    public Ping setSlowDownEndedTemplate( String slowDownEndedTemplate ) {
+        this.slowDownEndedTemplate = slowDownEndedTemplate;
 
         return this;
     }

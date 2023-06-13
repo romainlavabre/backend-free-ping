@@ -18,4 +18,5 @@ public interface Variable {
     String GMAIL_PASSWORD                 = "gmail.password";
     String DEFAULT_ADMIN_USERNAME         = "default.admin.username";
     String DEFAULT_ADMIN_PASSWORD         = "default.admin.password";
+    String BASE_TEMPLATE_PATH             = "base.template.path";
 }

@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
 @RestController( "AdminTestController" )
 @RequestMapping( path = "/admin/tests" )
 public class TestController {
@@ -20,9 +22,11 @@ public class TestController {
 
 
     @PostMapping( path = "/mail/{recipient}" )
-    public ResponseEntity< Void > mail( @PathVariable( "recipient" ) String recipient ) {
-        mailSender.send( null, recipient, "TEST", "This message is test from free ping" );
+    public ResponseEntity< Map< String, Boolean > > mail( @PathVariable( "recipient" ) String recipient ) {
+        boolean result = mailSender.send( null, recipient, "FREE PING TEST", "This message is test from free ping" );
 
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok( Map.of(
+                "result", result
+        ) );
     }
 }
