@@ -21,7 +21,7 @@ public class TestController {
 
     @PostMapping( path = "/mail/{recipient}" )
     public ResponseEntity< Void > mail( @PathVariable( "recipient" ) String recipient ) {
-        mailSender.send( recipient, "TEST", "This message is test from free ping" );
+        mailSender.send( null, recipient, "TEST", "This message is test from free ping" );
 
         return ResponseEntity.noContent().build();
     }
