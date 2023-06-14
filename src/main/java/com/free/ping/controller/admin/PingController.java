@@ -33,6 +33,8 @@ public class PingController {
     protected final Update< Ping >     updatePingSlowDownEndedTemplate;
     protected final Update< Ping >     updatePingDownTimeTechnicalTemplate;
     protected final Update< Ping >     updatePingSlowDownTechnicalTemplate;
+    protected final Update< Ping >     updatePingDownTimeUserSubject;
+    protected final Update< Ping >     updatePingSlowDownUserSubject;
     protected final PingRepository     pingRepository;
     protected final DataStorageHandler dataStorageHandler;
     protected final Request            request;
@@ -53,6 +55,8 @@ public class PingController {
             Update< Ping > updatePingSlowDownEndedTemplate,
             Update< Ping > updatePingDownTimeTechnicalTemplate,
             Update< Ping > updatePingSlowDownTechnicalTemplate,
+            Update< Ping > updatePingDownTimeUserSubject,
+            Update< Ping > updatePingSlowDownUserSubject,
             PingRepository pingRepository,
             DataStorageHandler dataStorageHandler,
             Request request ) {
@@ -70,6 +74,8 @@ public class PingController {
         this.updatePingSlowDownEndedTemplate     = updatePingSlowDownEndedTemplate;
         this.updatePingDownTimeTechnicalTemplate = updatePingDownTimeTechnicalTemplate;
         this.updatePingSlowDownTechnicalTemplate = updatePingSlowDownTechnicalTemplate;
+        this.updatePingDownTimeUserSubject       = updatePingDownTimeUserSubject;
+        this.updatePingSlowDownUserSubject       = updatePingSlowDownUserSubject;
         this.pingRepository                      = pingRepository;
         this.dataStorageHandler                  = dataStorageHandler;
         this.request                             = request;
@@ -261,6 +267,32 @@ public class PingController {
         Ping ping = pingRepository.findOrFail( id );
 
         updatePingSlowDownTechnicalTemplate.update( request, ping );
+
+        dataStorageHandler.save();
+
+        return ResponseEntity.ok( Encoder.encode( ping ) );
+    }
+
+
+    @Transactional
+    @PatchMapping( path = "/{id:[0-9]+}/down_time_user_subject" )
+    public ResponseEntity< Map< String, Object > > updateDownTimeUserSubject( @PathVariable( "id" ) long id ) {
+        Ping ping = pingRepository.findOrFail( id );
+
+        updatePingDownTimeUserSubject.update( request, ping );
+
+        dataStorageHandler.save();
+
+        return ResponseEntity.ok( Encoder.encode( ping ) );
+    }
+
+
+    @Transactional
+    @PatchMapping( path = "/{id:[0-9]+}/slow_down_user_subject" )
+    public ResponseEntity< Map< String, Object > > updateSlowDownUserSubject( @PathVariable( "id" ) long id ) {
+        Ping ping = pingRepository.findOrFail( id );
+
+        updatePingSlowDownUserSubject.update( request, ping );
 
         dataStorageHandler.save();
 

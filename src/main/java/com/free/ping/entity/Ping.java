@@ -26,6 +26,12 @@ public class Ping {
     @Column( name = "`interval`", nullable = false )
     private long interval;
 
+    @Column( length = 1000 )
+    private String downTimeUserSubject;
+
+    @Column( length = 1000 )
+    private String slowDownUserSubject;
+
     @Column( columnDefinition = "TEXT" )
     private String downTimeTechnicalTemplate;
 
@@ -136,6 +142,30 @@ public class Ping {
         }
 
         this.interval = interval;
+
+        return this;
+    }
+
+
+    public String getDownTimeUserSubject() {
+        return downTimeUserSubject;
+    }
+
+
+    public Ping setDownTimeUserSubject( String downTimeUserSubject ) {
+        this.downTimeUserSubject = downTimeUserSubject;
+
+        return this;
+    }
+
+
+    public String getSlowDownUserSubject() {
+        return slowDownUserSubject;
+    }
+
+
+    public Ping setSlowDownUserSubject( String slowDownUserSubject ) {
+        this.slowDownUserSubject = slowDownUserSubject;
 
         return this;
     }

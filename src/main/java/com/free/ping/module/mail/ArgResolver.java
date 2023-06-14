@@ -61,7 +61,32 @@ public class ArgResolver {
 
 
     public String resolveSubject( Incident incident ) {
+        String template = incident.getType() == Incident.TYPE_DOWN_TIME
+                ? incident.getPing().getDownTimeUserSubject()
+                : incident.getPing().getSlowDownUserSubject();
+        
+        Ping ping = incident.getPing();
 
+        String filename = UUID.randomUUID() + ".vm";
+        File   file     = new File( environment.getEnv( Variable.BASE_TEMPLATE_PATH ) + "/" + filename );
+
+        try {
+            file.createNewFile();
+
+            Files.writeString( file.toPath(), template );
+        } catch ( IOException e ) {
+            throw new RuntimeException( e );
+        }
+
+        Map< String, Object > params = new HashMap<>();
+        params.put( PING_TITLE, ping.getTitle() );
+        params.put( PING_PING_URL, ping.getPingUrl() );
+        params.put( PING_SLOW_DOWN_SECONDS, ping.getSlowDownSeconds() );
+        params.put( PING_INTERVAL, ping.getInterval() );
+        params.put( INCIDENT_OF, incident.getOf() );
+        params.put( INCIDENT_AT, incident.getAt() );
+
+        return templateBuilder.build( filename, params );
     }
 
 
