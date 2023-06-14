@@ -27,6 +27,12 @@ public class Ping {
     private long interval;
 
     @Column( columnDefinition = "TEXT" )
+    private String downTimeTechnicalTemplate;
+
+    @Column( columnDefinition = "TEXT" )
+    private String slowDownTechnicalTemplate;
+
+    @Column( columnDefinition = "TEXT" )
     private String downTimeDetectedTemplate;
 
     @Column( columnDefinition = "TEXT" )
@@ -130,6 +136,30 @@ public class Ping {
         }
 
         this.interval = interval;
+
+        return this;
+    }
+
+
+    public String getDownTimeTechnicalTemplate() {
+        return downTimeTechnicalTemplate;
+    }
+
+
+    public Ping setDownTimeTechnicalTemplate( String downTimeTechnicalTemplate ) {
+        this.downTimeTechnicalTemplate = downTimeTechnicalTemplate;
+
+        return this;
+    }
+
+
+    public String getSlowDownTechnicalTemplate() {
+        return slowDownTechnicalTemplate;
+    }
+
+
+    public Ping setSlowDownTechnicalTemplate( String slowDownTechnicalTemplate ) {
+        this.slowDownTechnicalTemplate = slowDownTechnicalTemplate;
 
         return this;
     }
