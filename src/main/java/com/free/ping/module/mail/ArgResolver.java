@@ -37,12 +37,11 @@ public class ArgResolver {
     public String resolveTemplate( String template, Incident incident ) {
         Ping ping = incident.getPing();
 
-        String filename = UUID.randomUUID() + ".vm";
-        File   file     = new File( environment.getEnv( Variable.BASE_TEMPLATE_PATH ) + "/" + filename );
+        String filename = UUID.randomUUID().toString();
+        File   file     = new File( environment.getEnv( Variable.BASE_TEMPLATE_PATH ) + filename + ".vm" );
 
         try {
             file.createNewFile();
-
             Files.writeString( file.toPath(), template );
         } catch ( IOException e ) {
             throw new RuntimeException( e );
@@ -64,11 +63,11 @@ public class ArgResolver {
         String template = incident.getType() == Incident.TYPE_DOWN_TIME
                 ? incident.getPing().getDownTimeUserSubject()
                 : incident.getPing().getSlowDownUserSubject();
-        
+
         Ping ping = incident.getPing();
 
-        String filename = UUID.randomUUID() + ".vm";
-        File   file     = new File( environment.getEnv( Variable.BASE_TEMPLATE_PATH ) + "/" + filename );
+        String filename = UUID.randomUUID().toString();
+        File   file     = new File( environment.getEnv( Variable.BASE_TEMPLATE_PATH ) + filename + ".vm" );
 
         try {
             file.createNewFile();

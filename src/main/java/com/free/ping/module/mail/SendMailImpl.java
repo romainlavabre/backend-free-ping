@@ -21,26 +21,47 @@ public class SendMailImpl implements SendMail {
 
     @Override
     public void send( Incident incident ) {
-        String         template;
-        List< String > recipients = incident.getPing().getAlertTechnicalEmails();
+        String         userTemplate;
+        List< String > technicalRecipients = incident.getPing().getAlertTechnicalEmails();
+        List< String > userRecipients      = incident.getPing().getAlertUserEmails();
 
         if ( incident.getType() == Incident.TYPE_DOWN_TIME ) {
-            template = incident.getAt() == null
+            userTemplate = incident.getAt() == null
                     ? incident.getPing().getDownTimeDetectedTemplate()
                     : incident.getPing().getDownTimeEndedTemplate();
 
         } else {
-            template = incident.getAt() == null
+            userTemplate = incident.getAt() == null
                     ? incident.getPing().getSlowDownDetectedTemplate()
                     : incident.getPing().getSlowDownEndedTemplate();
         }
 
-        if ( template == null ) {
+        if ( userTemplate == null ) {
             return;
         }
 
-        template = argResolver.resolveTemplate( template, incident );
 
+        mailSender.send(
+                null,
+                technicalRecipients,
+                ( incident.getAt() == null ? "DOWN " + incident.getOf().toString() : "UP " + incident.getAt().toString() ) + ( incident.getType() == Incident.TYPE_DOWN_TIME ? " DOWN TIME " : " SLOW DOWN " ) + incident.getPing().getTitle(),
+                incident.getAt() == null
+                        ? argResolver.resolveTemplate( "<html>Detected at $incident_of</html>", incident )
+                        : argResolver.resolveTemplate( "<html>Detected at $incident_of<br/><br/>Solved at $incident_at</html>", incident )
+        );
 
+        userTemplate = argResolver.resolveTemplate( userTemplate, incident );
+        String subject = argResolver.resolveSubject( incident );
+
+        if ( userTemplate == null || subject == null ) {
+            return;
+        }
+
+        mailSender.send(
+                null,
+                userRecipients,
+                subject,
+                userTemplate
+        );
     }
 }

@@ -7,6 +7,7 @@ import com.free.ping.api.rest.Rest;
 import com.free.ping.configuration.event.Event;
 import com.free.ping.entity.Incident;
 import com.free.ping.entity.Ping;
+import com.free.ping.module.mail.SendMail;
 import com.free.ping.repository.IncidentRepository;
 import com.free.ping.repository.PingRepository;
 import jakarta.persistence.EntityManager;
@@ -37,15 +38,18 @@ public class PingCheckpoint implements EventSubscriber {
     protected final PingRepository       pingRepository;
     protected final IncidentRepository   incidentRepository;
     protected final EntityManagerFactory entityManagerFactory;
+    protected final SendMail             sendMail;
 
 
     public PingCheckpoint(
             PingRepository pingRepository,
             IncidentRepository incidentRepository,
-            EntityManagerFactory entityManagerFactory ) {
+            EntityManagerFactory entityManagerFactory,
+            SendMail sendMail ) {
         this.pingRepository       = pingRepository;
         this.incidentRepository   = incidentRepository;
         this.entityManagerFactory = entityManagerFactory;
+        this.sendMail             = sendMail;
         initCache();
         initCurrentIncident();
     }
@@ -118,6 +122,8 @@ public class PingCheckpoint implements EventSubscriber {
                     currentIncident.setAt( ZonedDateTime.now( ZoneOffset.UTC ) );
 
                     entityManager.persist( currentIncident );
+                } else {
+                    sendMail.send( incident );
                 }
 
                 entityManager.persist( incident );
@@ -145,6 +151,8 @@ public class PingCheckpoint implements EventSubscriber {
                     entityManager.persist( incident );
 
                     CURRENT_INCIDENT.remove( entry.getKey() );
+
+                    sendMail.send( incident );
                 }
             }
         }
