@@ -49,6 +49,14 @@ public class RequestBuilderImpl implements RequestBuilder {
 
 
     @Override
+    public RequestBuilder withXApiKey( String apiKey ) {
+        addHeader( "X-Api-Key", apiKey );
+
+        return this;
+    }
+
+
+    @Override
     public RequestBuilder routeParam( final String param, final String value ) {
         this.requestWithBody.routeParam( param, value );
 

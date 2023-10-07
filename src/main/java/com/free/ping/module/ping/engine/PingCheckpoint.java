@@ -1,4 +1,4 @@
-package com.free.ping.module.ping;
+package com.free.ping.module.ping.engine;
 
 import com.free.ping.api.event.EventSubscriber;
 import com.free.ping.api.rest.RequestBuilder;
@@ -220,8 +220,10 @@ public class PingCheckpoint implements EventSubscriber {
 
             List< Ping > pings = pingRepository.findAll();
 
+            int i = 0;
+
             for ( Ping ping : pings ) {
-                int seconds = 0;
+                int seconds = i;
 
                 while ( seconds <= 59 ) {
                     if ( !result.containsKey( seconds ) ) {
@@ -231,6 +233,12 @@ public class PingCheckpoint implements EventSubscriber {
                     result.get( seconds ).add( ping );
 
                     seconds += ping.getInterval();
+                }
+
+                if ( i == 3 ) {
+                    i = 0;
+                } else {
+                    i++;
                 }
             }
 

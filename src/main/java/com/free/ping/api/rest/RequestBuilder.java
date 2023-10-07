@@ -32,6 +32,9 @@ public interface RequestBuilder {
     RequestBuilder withBearerToken( String token );
 
 
+    RequestBuilder withXApiKey( String apiKey );
+
+
     RequestBuilder routeParam( String param, String value );
 
 

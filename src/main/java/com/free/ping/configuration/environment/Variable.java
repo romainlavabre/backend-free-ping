@@ -14,8 +14,10 @@ public interface Variable {
     String MAILGUN_DOMAIN                 = "";
     String MAILGUN_PRIVATE_KEY            = "";
     String MAILGUN_FROM                   = "";
-    String GMAIL_USERNAME                 = "gmail.username";
-    String GMAIL_PASSWORD                 = "gmail.password";
+    String SMTP_HOST                      = "smtp.host";
+    String SMTP_PORT                      = "smtp.port";
+    String SMTP_USERNAME                  = "smtp.username";
+    String SMTP_PASSWORD                  = "smtp.password";
     String DEFAULT_ADMIN_USERNAME         = "default.admin.username";
     String DEFAULT_ADMIN_PASSWORD         = "default.admin.password";
     String BASE_TEMPLATE_PATH             = "base.template.path";

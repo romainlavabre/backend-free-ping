@@ -42,7 +42,7 @@ public class SendMailImpl implements SendMail {
 
 
         mailSender.send(
-                null,
+                "FREE PING",
                 technicalRecipients,
                 ( incident.getAt() == null ? "DOWN " + incident.getOf().toString() : "UP " + incident.getAt().toString() ) + ( incident.getType() == Incident.TYPE_DOWN_TIME ? " DOWN TIME " : " SLOW DOWN " ) + incident.getPing().getTitle(),
                 incident.getAt() == null
@@ -58,7 +58,7 @@ public class SendMailImpl implements SendMail {
         }
 
         mailSender.send(
-                null,
+                "FREE PING",
                 userRecipients,
                 subject,
                 userTemplate
