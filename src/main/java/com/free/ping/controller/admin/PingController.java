@@ -1,14 +1,14 @@
 package com.free.ping.controller.admin;
 
-import com.free.ping.api.crud.Create;
-import com.free.ping.api.crud.Update;
-import com.free.ping.api.json.Encoder;
-import com.free.ping.api.request.Request;
-import com.free.ping.api.storage.data.DataStorageHandler;
 import com.free.ping.configuration.json.GroupType;
 import com.free.ping.entity.Ping;
 import com.free.ping.repository.PingRepository;
 import jakarta.transaction.Transactional;
+import org.romainlavabre.crud.Create;
+import org.romainlavabre.crud.Update;
+import org.romainlavabre.database.DataStorageHandler;
+import org.romainlavabre.encoder.Encoder;
+import org.romainlavabre.request.Request;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

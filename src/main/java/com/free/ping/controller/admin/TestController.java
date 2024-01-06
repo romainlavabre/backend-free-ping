@@ -1,6 +1,6 @@
 package com.free.ping.controller.admin;
 
-import com.free.ping.api.mail.MailSender;
+import org.romainlavabre.mail.MailSender;
 import com.free.ping.entity.Incident;
 import com.free.ping.entity.Ping;
 import com.free.ping.module.mail.SendMail;

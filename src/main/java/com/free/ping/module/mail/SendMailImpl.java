@@ -1,6 +1,6 @@
 package com.free.ping.module.mail;
 
-import com.free.ping.api.mail.MailSender;
+import org.romainlavabre.mail.MailSender;
 import com.free.ping.entity.Incident;
 import org.springframework.stereotype.Service;
 

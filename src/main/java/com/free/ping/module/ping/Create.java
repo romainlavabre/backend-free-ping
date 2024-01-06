@@ -1,16 +1,16 @@
 package com.free.ping.module.ping;
 
-import com.free.ping.api.history.HistoryHandler;
-import com.free.ping.api.request.Request;
 import com.free.ping.entity.Ping;
 import com.free.ping.parameter.PingParameter;
 import com.free.ping.repository.PingRepository;
+import org.romainlavabre.history.HistoryHandler;
+import org.romainlavabre.request.Request;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service( "createPing" )
-public class Create implements com.free.ping.api.crud.Create< Ping > {
+public class Create implements org.romainlavabre.crud.Create< Ping > {
     protected final PingRepository pingRepository;
     protected final HistoryHandler historyHandler;
 

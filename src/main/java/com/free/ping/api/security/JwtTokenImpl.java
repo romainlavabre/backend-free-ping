@@ -1,11 +1,11 @@
 package com.free.ping.api.security;
 
-import com.free.ping.api.environment.Environment;
 import com.free.ping.configuration.environment.Variable;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.romainlavabre.environment.Environment;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -36,13 +36,13 @@ public class JwtTokenImpl implements JwtTokenHandler {
         final User user = this.userRepository.findByUsername( userDetails.getUsername() );
 
         return Jwts.builder()
-                   .signWith( SignatureAlgorithm.HS512, this.environment.getEnv( Variable.JWT_SECRET ) )
-                   .setExpiration( this.getExpiration() )
-                   .setIssuedAt( new Date() )
-                   .setSubject( String.valueOf( user.getId() ) )
-                   .claim( "username", user.getUsername() )
-                   .claim( "roles", String.join( ",", AuthorityUtils.authorityListToSet( userDetails.getAuthorities() ) ) )
-                   .compact();
+                .signWith( SignatureAlgorithm.HS512, this.environment.getEnv( Variable.JWT_SECRET ) )
+                .setExpiration( this.getExpiration() )
+                .setIssuedAt( new Date() )
+                .setSubject( String.valueOf( user.getId() ) )
+                .claim( "username", user.getUsername() )
+                .claim( "roles", String.join( ",", AuthorityUtils.authorityListToSet( userDetails.getAuthorities() ) ) )
+                .compact();
     }
 
 

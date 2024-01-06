@@ -1,15 +1,19 @@
 package com.free.ping;
 
-import com.free.ping.api.environment.Environment;
+import org.romainlavabre.environment.Environment;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-@SpringBootApplication
+@SpringBootApplication( scanBasePackages = { "com.free.ping", "org.romainlavabre" } )
+@EntityScan( { "com.free.ping", "org.romainlavabre" } )
+@EnableJpaRepositories( { "com.free.ping", "org.romainlavabre" } )
 @EnableScheduling
 @EnableAsync
 public class FreePingApplication {

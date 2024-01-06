@@ -1,6 +1,6 @@
 package com.free.ping.configuration.history;
 
-import com.free.ping.api.history.HistoryConfigurer;
+import org.romainlavabre.history.HistoryDataProvider;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -9,7 +9,7 @@ import java.util.Optional;
  * @author Romain Lavabre <romainlavabre98@gmail.com>
  */
 @Service
-public class HistoryConfigurerImpl implements HistoryConfigurer {
+public class HistoryConfigurerImpl implements HistoryDataProvider {
 
     @Override
     public Optional< Integer > getAuthorId() {

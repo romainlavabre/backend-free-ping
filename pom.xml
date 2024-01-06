@@ -123,6 +123,98 @@
             <artifactId>velocity</artifactId>
             <version>1.7</version>
         </dependency>
+
+
+        <!-- SUBMODULE TOKEN GENERATOR -->
+        <dependency>
+            <groupId>org.romainlavabre</groupId>
+            <artifactId>tokengen</artifactId>
+            <version>2.0.0</version>
+        </dependency>
+        <!-- SUBMODULE CRUD -->
+        <dependency>
+            <groupId>org.romainlavabre</groupId>
+            <artifactId>crud</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+        <!-- SUBMODULE DATABASE -->
+        <dependency>
+            <groupId>org.romainlavabre</groupId>
+            <artifactId>database</artifactId>
+            <version>2.0.0</version>
+        </dependency>
+        <!-- SUBMODULE ENVIRONMENT -->
+        <dependency>
+            <groupId>org.romainlavabre</groupId>
+            <artifactId>environment</artifactId>
+            <version>2.0.0</version>
+        </dependency>
+        <!-- SUBMODULE CONTAINER -->
+        <dependency>
+            <groupId>org.romainlavabre</groupId>
+            <artifactId>container</artifactId>
+            <version>2.0.0</version>
+        </dependency>
+        <!-- SUBMODULE REQUEST -->
+        <dependency>
+            <groupId>org.romainlavabre</groupId>
+            <artifactId>request</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+        <!-- SUBMODULE EVENT -->
+        <dependency>
+            <groupId>org.romainlavabre</groupId>
+            <artifactId>event</artifactId>
+            <version>4.0.0</version>
+        </dependency>
+        <!-- SUBMODULE ENCODER -->
+        <dependency>
+            <groupId>org.romainlavabre</groupId>
+            <artifactId>encoder</artifactId>
+            <version>4.0.2</version>
+        </dependency>
+        <!-- SUBMODULE HISTORY -->
+        <dependency>
+            <groupId>org.romainlavabre</groupId>
+            <artifactId>history</artifactId>
+            <version>4.0.1</version>
+        </dependency>
+        <!-- SUBMODULE TEMPLATE -->
+        <dependency>
+            <groupId>org.romainlavabre</groupId>
+            <artifactId>template</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+        <!-- SUBMODULE REST -->
+        <dependency>
+            <groupId>org.romainlavabre</groupId>
+            <artifactId>rest</artifactId>
+            <version>2.0.0</version>
+        </dependency>
+        <!-- SUBMODULE MAIL -->
+        <dependency>
+            <groupId>org.romainlavabre</groupId>
+            <artifactId>mail</artifactId>
+            <version>4.1.0</version>
+        </dependency>
+        <!-- SUBMODULE SMS -->
+        <dependency>
+            <groupId>org.romainlavabre</groupId>
+            <artifactId>sms</artifactId>
+            <version>4.0.0</version>
+        </dependency>
+        <!-- SUBMODULE EXCEPTION -->
+        <dependency>
+            <groupId>org.romainlavabre</groupId>
+            <artifactId>exception</artifactId>
+            <version>1.2.0</version>
+        </dependency>
+        <!-- SUBMODULE PAGINATION -->
+        <dependency>
+            <groupId>org.romainlavabre</groupId>
+            <artifactId>pagination</artifactId>
+            <version>5.0.0</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -132,5 +224,10 @@
             </plugin>
         </plugins>
     </build>
-
+    <repositories>
+        <repository>
+            <id>fairfair-maven-repository</id>
+            <url>https://fairfair-maven-repository.s3.eu-west-3.amazonaws.com</url>
+        </repository>
+    </repositories>
 </project>

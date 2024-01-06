@@ -1,8 +1,8 @@
 package com.free.ping.module.ping;
 
-import com.free.ping.api.crud.Update;
-import com.free.ping.api.history.HistoryHandler;
-import com.free.ping.api.request.Request;
+import org.romainlavabre.crud.Update;
+import org.romainlavabre.history.HistoryHandler;
+import org.romainlavabre.request.Request;
 import com.free.ping.entity.Ping;
 import com.free.ping.parameter.PingParameter;
 import com.free.ping.property.PingProperty;

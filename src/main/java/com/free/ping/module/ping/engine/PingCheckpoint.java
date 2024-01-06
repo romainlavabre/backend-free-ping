@@ -1,9 +1,5 @@
 package com.free.ping.module.ping.engine;
 
-import com.free.ping.api.event.EventSubscriber;
-import com.free.ping.api.rest.RequestBuilder;
-import com.free.ping.api.rest.Response;
-import com.free.ping.api.rest.Rest;
 import com.free.ping.configuration.event.Event;
 import com.free.ping.entity.Incident;
 import com.free.ping.entity.Ping;
@@ -12,6 +8,10 @@ import com.free.ping.repository.IncidentRepository;
 import com.free.ping.repository.PingRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import org.romainlavabre.event.EventSubscriber;
+import org.romainlavabre.rest.RequestBuilder;
+import org.romainlavabre.rest.Response;
+import org.romainlavabre.rest.Rest;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.scheduling.annotation.Async;
@@ -201,7 +201,7 @@ public class PingCheckpoint implements EventSubscriber {
 
 
     @Override
-    public List< Event > getEvents() {
+    public List< Enum > getEvents() {
         return List.of(
                 Event.TRANSACTION_SUCCESS
         );
@@ -209,7 +209,7 @@ public class PingCheckpoint implements EventSubscriber {
 
 
     @Override
-    public void receiveEvent( Event event, Map< String, Object > params ) throws RuntimeException {
+    public void receiveEvent( Enum event, Map< String, Object > params ) throws RuntimeException {
         initCache();
     }
 

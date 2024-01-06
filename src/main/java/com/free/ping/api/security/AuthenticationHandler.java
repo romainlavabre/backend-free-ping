@@ -1,8 +1,8 @@
 package com.free.ping.api.security;
 
-import com.free.ping.api.request.Request;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
+import org.romainlavabre.request.Request;
 import org.springframework.security.core.Authentication;
 
 /**
@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
  */
 public interface AuthenticationHandler {
     Authentication getAuthentication( Jws< Claims > token );
+
 
     Authentication authenticate( final Request request );
 }

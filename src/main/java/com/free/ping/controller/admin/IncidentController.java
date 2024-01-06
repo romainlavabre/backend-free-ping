@@ -1,11 +1,11 @@
 package com.free.ping.controller.admin;
 
-import com.free.ping.api.json.Encoder;
 import com.free.ping.configuration.json.GroupType;
 import com.free.ping.entity.Incident;
 import com.free.ping.entity.Ping;
 import com.free.ping.repository.IncidentRepository;
 import com.free.ping.repository.PingRepository;
+import org.romainlavabre.encoder.Encoder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

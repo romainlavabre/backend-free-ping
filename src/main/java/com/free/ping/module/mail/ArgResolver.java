@@ -1,7 +1,7 @@
 package com.free.ping.module.mail;
 
-import com.free.ping.api.environment.Environment;
-import com.free.ping.api.template.TemplateBuilder;
+import org.romainlavabre.environment.Environment;
+import org.romainlavabre.template.TemplateBuilder;
 import com.free.ping.configuration.environment.Variable;
 import com.free.ping.entity.Incident;
 import com.free.ping.entity.Ping;

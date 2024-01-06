@@ -1,8 +1,8 @@
 package com.free.ping.api.security;
 
-import com.free.ping.api.json.annotation.Group;
-import com.free.ping.api.json.annotation.Json;
 import jakarta.persistence.*;
+import org.romainlavabre.encoder.annotation.Group;
+import org.romainlavabre.encoder.annotation.Json;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -131,7 +131,7 @@ public class User {
         this.resetPasswordToken = resetPasswordToken;
 
         resetPasswordTokenUpdatedAt = ZonedDateTime.now( ZoneId.of( "UTC" ) );
-        
+
         return this;
     }
 

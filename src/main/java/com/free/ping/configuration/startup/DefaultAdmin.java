@@ -1,6 +1,5 @@
 package com.free.ping.configuration.startup;
 
-import com.free.ping.api.environment.Environment;
 import com.free.ping.api.security.PasswordEncoder;
 import com.free.ping.api.security.User;
 import com.free.ping.api.security.UserRepository;
@@ -8,6 +7,7 @@ import com.free.ping.configuration.environment.Variable;
 import com.free.ping.configuration.security.Role;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
+import org.romainlavabre.environment.Environment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -47,7 +47,7 @@ public class DefaultAdmin {
             user.setUsername( environment.getEnv( Variable.DEFAULT_ADMIN_USERNAME ) );
             user.setPassword( passwordEncoder.encode( environment.getEnv( Variable.DEFAULT_ADMIN_PASSWORD ) ) );
             user.addRole( Role.ADMIN );
-            
+
             entityManager.persist( user );
             entityManager.flush();
 

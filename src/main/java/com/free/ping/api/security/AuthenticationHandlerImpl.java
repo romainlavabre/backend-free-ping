@@ -1,8 +1,8 @@
 package com.free.ping.api.security;
 
-import com.free.ping.api.request.Request;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
+import org.romainlavabre.request.Request;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
